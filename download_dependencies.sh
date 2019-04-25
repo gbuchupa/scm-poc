@@ -22,8 +22,4 @@ sudo add-apt-repository \
 sudo apt-get update
 sudo apt-get install docker-ce
 sudo apt-get install docker-compose
-git clone https://github.com/hyperledger/fabric-samples.git
-cd  fabric-samples
-git checkout release-1.3
 curl -sSL http://bit.ly/2ysbOFE | sudo bash -s 1.3.0 1.3.0 0.4.13
-export PATH=~/fabric-samples/bin:$PATH
