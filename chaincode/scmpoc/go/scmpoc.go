@@ -41,8 +41,8 @@ import (
 type SmartContract struct {
 }
 
-type ANSStruct struct {
-	ASNId       string `json:"ansId"`
+type ASNStruct struct {
+	ASNId       string `json:"asnId"`
 	EDI940ID    string `json:"EDI940ID"`
 	fileHash940 string `json:"fileHash940"`
 	EDI945ID    string `json:"EDI945ID"`
@@ -82,64 +82,64 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 
 func (s *SmartContract) submitEDI940(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	ansId := args[0]
+	asnId := args[0]
 	EDI940Id := args[1]
 	fileHash := args[2]
 
-	ICAsBytes, _ := APIstub.GetState(ansId)
+	ICAsBytes, _ := APIstub.GetState(asnId)
 
 	if ICAsBytes != nil {
-		return shim.Error("ANS already already exists")
+		return shim.Error("ASN already already exists")
 	}
 
-	ANSObj := ANSStruct{ASNId: ansId, EDI940ID: EDI940Id, fileHash945: fileHash}
-	ICBytes, err := json.Marshal(ANSObj)
+	ASNObj := ASNStruct{ASNId: asnId, EDI940ID: EDI940Id, fileHash945: fileHash}
+	ICBytes, err := json.Marshal(ASNObj)
 
 	if err != nil {
 		return shim.Error("Not able to parse values")
 	}
 
-	APIstub.PutState(ansId, ICBytes)
-	fmt.Println("EDI940 Submitted -> ", ANSObj)
+	APIstub.PutState(asnId, ICBytes)
+	fmt.Println("EDI940 Submitted -> ", ASNObj)
 
 	return shim.Success(nil)
 }
 
 func (s *SmartContract) getEDI940(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
 
-	ansId := args[0]
+	asnId := args[0]
 
-	ICAsBytes, _ := APIstub.GetState(ansId)
+	ICAsBytes, _ := APIstub.GetState(asnId)
 
 	return shim.Success(ICAsBytes)
 }
 
 func (s *SmartContract) submitEDI945(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-	ansId := args[0]
+	asnId := args[0]
 	EDI945Id := args[1]
 	fileHash := args[2]
 
-	ICAsBytes, _ := APIstub.GetState(ansId)
+	ICAsBytes, _ := APIstub.GetState(asnId)
 
 	if ICAsBytes == nil {
-		return shim.Error("ANS already already exists")
+		return shim.Error("ASN already already exists")
 	}
 
-	ANSObj := ANSStruct{}
-	err := json.Unmarshal(ICAsBytes, &ANSObj)
+	ASNObj := ASNStruct{}
+	err := json.Unmarshal(ICAsBytes, &ASNObj)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	ANSObj.EDI945ID = EDI945Id
-	ANSObj.fileHash945 = fileHash
+	ASNObj.EDI945ID = EDI945Id
+	ASNObj.fileHash945 = fileHash
 
-	ICBytes, err := json.Marshal(ANSObj)
+	ICBytes, err := json.Marshal(ASNObj)
 	if err != nil {
 		return shim.Error("Not able to parse values")
 	}
 
-	APIstub.PutState(ansId, ICBytes)
-	fmt.Println("EDI940 Submitted -> ", ANSObj)
+	APIstub.PutState(asnId, ICBytes)
+	fmt.Println("EDI940 Submitted -> ", ASNObj)
 
 	return shim.Success(nil)
 }
@@ -149,31 +149,31 @@ func (s *SmartContract) getEDI945(APIstub shim.ChaincodeStubInterface, args []st
 }
 
 func (s *SmartContract) submitEDI856(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-	ansId := args[0]
+	asnId := args[0]
 	EDI856Id := args[1]
 	fileHash := args[2]
 
-	ICAsBytes, _ := APIstub.GetState(ansId)
+	ICAsBytes, _ := APIstub.GetState(asnId)
 
 	if ICAsBytes == nil {
-		return shim.Error("ANS already already exists")
+		return shim.Error("ASN already already exists")
 	}
 
-	ANSObj := ANSStruct{}
-	err := json.Unmarshal(ICAsBytes, &ANSObj)
+	ASNObj := ASNStruct{}
+	err := json.Unmarshal(ICAsBytes, &ASNObj)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
-	ANSObj.EDI856ID = EDI856Id
-	ANSObj.fileHash856 = fileHash
+	ASNObj.EDI856ID = EDI856Id
+	ASNObj.fileHash856 = fileHash
 
-	ICBytes, err := json.Marshal(ANSObj)
+	ICBytes, err := json.Marshal(ASNObj)
 	if err != nil {
 		return shim.Error("Not able to parse values")
 	}
 
-	APIstub.PutState(ansId, ICBytes)
-	fmt.Println("EDI Submitted -> ", ANSObj)
+	APIstub.PutState(asnId, ICBytes)
+	fmt.Println("EDI Submitted -> ", ASNObj)
 
 	return shim.Success(nil)
 
